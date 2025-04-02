@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  height: 100vh; /* Занимает всю высоту экрана */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: 
+  radial-gradient(circle at 20% 30%, #6ab7f5 0%, transparent 40%),
+  radial-gradient(circle at 70% 60%, #f5a9b8 0%, transparent 50%),
+  radial-gradient(circle at 50% 80%, #f5c6a9 0%, transparent 30%),
+  #6ab7f5; /* Базовый цвет фона */
+  overflow: hidden; /* Убираем прокрутку */
+}
