@@ -31,10 +31,10 @@
         <p>${e}</p>
       </div>
       <div class="front-buttons">
-        <button class="fail"><img src="/close.png" alt=""></button>
-        <button class="edit"><img src="/edit.png" alt=""></button>
-        <button class="finish"><img src="/success.png" alt=""></button>
-        <button class="start"><img src="/start.png" alt=""></button>
+        <button class="fail"><img src="./close.png" alt=""></button>
+        <button class="edit"><img src="./edit.png" alt=""></button>
+        <button class="finish"><img src="./success.png" alt=""></button>
+        <button class="start"><img src="./start.png" alt=""></button>
       </div>
       <div class="date-priority">
         <div class="due">
@@ -66,9 +66,9 @@
         <input type="text" name="due" class="edit-due">
       </div>
       <div class="edit-buttons">
-        <button class="delete"><img src="/bin.png" alt=""></button>
-        <button class="save"><img src="/check-mark.png" alt=""></button>
-        <button class="cancel"><img src="/close.png" alt=""></button>
+        <button class="delete"><img src="./bin.png" alt=""></button>
+        <button class="save"><img src="./check-mark.png" alt=""></button>
+        <button class="cancel"><img src="./close.png" alt=""></button>
       </div>
     </div>
   `},Pl=document.querySelector(".add-todo");function Dl(){const t=Tl()+1,e={id:t,name:"Название",description:"Описание",due:"2025-10-10",priority:"5",column:"new-todos"},i=document.createElement("div");i.classList.add("todo"),i.setAttribute("card-column",e.column),i.setAttribute("data-id",e.id),i.innerHTML=Oo(e),document.querySelector(".new-todos .todo-container").appendChild(i),si=document.querySelectorAll(".todo");const r=Xe();r.push(e),ii(r),bl(t),hi()}Pl.addEventListener("click",()=>{Dl(),hi()});function Ml(){Xe().forEach(t=>{const e=document.createElement("div");e.classList.add("todo"),e.setAttribute("card-column",t.column),e.setAttribute("data-id",t.id),e.innerHTML=Oo(t),(t.column==="new-todos"?Sl:ko).appendChild(e)}),si=document.querySelectorAll(".todo"),hi()}Ml();
