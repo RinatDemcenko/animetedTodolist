@@ -3,10 +3,13 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column; 
-  background: rgba(106, 157, 245, 1);
+  background: rgb(106, 157, 245);
   font-family: Arial, sans-serif; 
   min-height: 100vh;
   max-width: 100%;
+}
+img{
+filter: invert();
 }
 
 header {
@@ -14,7 +17,7 @@ header {
   height: auto;
   background-color: #fff;
   display: grid;
-  grid-template-columns: 2fr 1fr 2fr; 
+  grid-template-columns: 3fr 1fr 3fr; 
   align-items: center;
   justify-items: center;
   padding: 10px;
@@ -168,49 +171,104 @@ label {
 }
 
 #preset1 {
-  background-color: rgb(152, 106, 250);
+  background-color: rgb(106, 157, 245); /* Светлый голубовато-серый */
 }
 
 #preset1 .inner-color {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7); /* Насыщенный синий */
 }
 
 #preset2 {
-  background-color: rgb(106, 245, 157);
+  background-color: #000000; /* Яркий красный */
 }
 
 #preset2 .inner-color {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(255, 162, 0, 0.7); /* Светлый бежевый */
 }
 
 #preset3 {
-  background-color: rgb(245, 106, 157);
+  background-color: rgb(245, 106, 157); /* Оставляем без изменений */
 }
 
 #preset3 .inner-color {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7); /* Белый */
 }
 
 #preset4 {
-  background-color: rgba(106, 157, 245, 1);; 
+  background-color: #f4a261; /* Приглушённый оранжевый */
 }
+
 #preset4 .inner-color {
-  background-color: rgba(255, 255, 255, 0.7); 
+  background-color: rgba(42, 157, 143, 0.7); /* Бирюзовый */
 }
 
 #preset5 {
-  background-color: rgb(75, 192, 192); 
+  background-color: #8ac926; /* Яркий лаймовый */
 }
+
 #preset5 .inner-color {
-  background-color: rgba(0, 0, 0, 0.7); 
+  background-color: rgba(25, 130, 196, 0.7); /* Насыщенный голубой */
 }
 
 #preset6 {
-  background-color: rgb(0, 0, 0); 
+  background-color: #ffca3a; /* Яркий жёлтый */
 }
+
 #preset6 .inner-color {
-  background-color: rgba(255, 221, 3, 0.7); 
+  background-color: rgba(8, 28, 21, 0.7); /* Тёмно-зелёный */
 }
+
+/* Дополнительные 6 пресетов */
+
+#preset7 {
+  background-color: #d8f3dc; /* Очень светлый зелёный */
+}
+
+#preset7 .inner-color {
+  background-color: rgba(43, 44, 40, 0.7); /* Тёмно-серый */
+}
+
+#preset8 {
+  background-color: #bbd0d7; /* Светлый серо-голубой */
+}
+
+#preset8 .inner-color {
+  background-color: rgba(55, 6, 23, 0.7); /* Тёмно-бордовый */
+}
+
+#preset9 {
+  background-color: #ffadad; /* Светло-розовый */
+}
+
+#preset9 .inner-color {
+  background-color: rgba(106, 4, 15, 0.7); /* Тёмно-красный */
+}
+
+#preset10 {
+  background-color: #9d4edd; /* Фиолетовый */
+}
+
+#preset10 .inner-color {
+  background-color: rgba(247, 37, 133, 0.7); /* Малиновый */
+}
+
+#preset11 {
+  background-color: #4cc9f0; /* Яркий голубой */
+}
+
+#preset11 .inner-color {
+  background-color: rgba(19, 42, 19, 0.7); /* Тёмно-зелёный */
+}
+
+#preset12 {
+  background-color: #f9c74f; /* Насыщенный жёлтый */
+}
+
+#preset12 .inner-color {
+  background-color: rgba(59, 89, 152, 0.7); /* Синий Facebook */
+}
+
+
 
 .active{
   width:150px;
@@ -243,6 +301,15 @@ label {
   overflow-y: auto; 
 }
 
+.col-label{
+  position:absolute;
+  top:20;
+  left:50%;
+  transform:translateX(-50%);
+  color:#b0b0b0;
+  opacity:0.9;
+}
+
 .todo-container {
   margin-top: 80px;
   width: 95%;
@@ -254,7 +321,6 @@ label {
 
 .todo {
   position: relative;
-  padding-top: 10px;
   width: 90%;
   height: 175px; 
   border-radius: 10px;
@@ -366,7 +432,18 @@ label {
   margin-bottom:7px;
 }
 
-.new-todos .finish, .new-todos .fail{
+.back-button{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width:20px;
+  height:20px;
+  filter:none;
+  opacity:0.5;
+  cursor: pointer;
+}
+
+.new-todos .finish, .new-todos .fail, .new-todos .back-button{
   display: none;
 }
 
@@ -404,6 +481,7 @@ label {
   background-color: #c33d5f;
   transform: translateY(-2px);
 }
+
 
 
 
@@ -524,7 +602,6 @@ label {
 .todo-list button img{
   width: 20px;
   height: 20px;
-  filter: invert();
 }
 
 .add-todo{
@@ -542,3 +619,31 @@ label {
   font-size: 14px;
   transition: background-color 0.3s, transform 0.2s;
 }
+
+.animation-cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(131, 255, 90, 0.9);
+  z-index: 3;
+  display: none; 
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.animation-icon {
+  width: 40px;
+  height: 40px;
+  opacity: 0; 
+}
+
+.animation-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  opacity: 0; 
+}
+

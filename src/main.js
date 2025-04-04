@@ -95,9 +95,25 @@ applyColorButton.addEventListener("click", () => {
 const viewPresets = document.querySelector(".view");
 console.log(viewPresets);
 const PresetsContainer = document.querySelector(".presets");
+const presets = document.querySelectorAll(".preset");
 
 viewPresets.addEventListener("click", () => {
   PresetsContainer.classList.toggle("active");
+});
+
+presets.forEach(preset => {
+  preset.addEventListener("click", () => {
+    document.body.style.backgroundColor = window.getComputedStyle(preset).backgroundColor;
+    const innerColor = window.getComputedStyle(preset.querySelector(".inner-color")).backgroundColor;
+    const rgbMatch = innerColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (rgbMatch) {
+      const r = parseInt(rgbMatch[1], 10);
+      const g = parseInt(rgbMatch[2], 10);
+      const b = parseInt(rgbMatch[3], 10);
+
+      particles.forEach(particle => particle.changeColor(r, g, b));
+    }
+  });
 });
 
 // Переворот карточек
@@ -184,6 +200,11 @@ function updateTodoList() {
     const saveButton = todo.querySelector(".save");
     const deleteButton = todo.querySelector(".delete");
     const cancelButton = todo.querySelector(".cancel");
+    const backButton = todo.querySelector(".back-button");
+
+    const animationCover = todo.querySelector(".animation-cover");
+    const animationText = todo.querySelector(".animation-text");
+    const animationIcon = todo.querySelector(".animation-icon");
 
     editTodoName.value = todoName.innerText;
     editDescription.value = todoDescription.innerText;
@@ -191,9 +212,9 @@ function updateTodoList() {
     editDue.value = todoDue.innerText;
 
     let newName = todoName.innerText,
-        newDescription = todoDescription.innerText,
-        newPriority = todoPriority.innerText,
-        newDue = todoDue.innerText;
+      newDescription = todoDescription.innerText,
+      newPriority = todoPriority.innerText,
+      newDue = todoDue.innerText;
 
     editTodoName.addEventListener("input", () => {
       newName = editTodoName.value;
@@ -208,16 +229,174 @@ function updateTodoList() {
       newDue = editDue.value;
     });
 
-    startButton.addEventListener("click", () => {
-      inProcessContainer.appendChild(todo);
-      todo.setAttribute("card-column", "in-process");
 
-      const todosData = loadTodosFromStorage();
-      const todoData = todosData.find(t => t.id === parseInt(todo.dataset.id, 10));
-      if (todoData) {
-        todoData.column = "in-process";
-        saveTodosToStorage(todosData);
-      }
+    // Раздел анимаций
+    // Раздел анимаций
+    // Раздел анимаций
+
+    async function successAnimation() {
+      animationCover.style.display = "flex";
+      animationIcon.src = "./success.png";
+      animationText.innerText = "Задание выполнено!";
+
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          animationCover.style.display = "none";
+        },
+      });
+
+      // 1. Пульсация фона .animation-cover
+      timeline.to(animationCover, {
+        opacity: 1,
+        scale: 1.05,
+        duration: 0.5,
+        repeat: 1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      // 2. Анимация иконки (взлёт и вращение)
+      timeline.fromTo(
+        animationIcon,
+        { opacity: 0, y: 20, rotation: 0 },
+        { opacity: 1, y: -30, rotation: 360, duration: 1, ease: "back.out(1.7)" },
+        "-=0.8"
+      );
+
+      // 3. Появление текста
+      timeline.fromTo(
+        animationText,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.6"
+      );
+
+      // 4. Исчезновение иконки и текста
+      timeline.to([animationIcon, animationText], {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
+      });
+      await timeline;
+      animationCover.style.display = "none";
+      return "i am resolved";
+    }
+
+    async function failAnimation() {
+      animationCover.style.display = "flex";
+      animationIcon.src = "./close.png";
+      animationText.innerText = "Задание провалено";
+
+      animationCover.style.backgroundColor = "rgba(255, 90, 90, 0.9)";
+      const timeline = gsap.timeline();
+
+      // 1. Пульсация фона
+      timeline.to(animationCover, {
+        opacity: 1,
+        scale: 1.03,
+        duration: 0.4,
+        repeat: 1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      // 2. Тряска иконки
+      timeline.fromTo(
+        animationIcon,
+        { opacity: 0, x: 0 },
+        {
+          opacity: 1,
+          y: -50,
+          duration: 0.3,
+          yoyo: false,
+          ease: "power2.inOut",
+        },
+        "-=0.4"
+      );
+
+      // 3. Появление текста
+      timeline.fromTo(
+        animationText,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        "-=0.3"
+      );
+
+      // 4. Исчезновение
+      timeline.to([animationIcon, animationText], {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+      });
+
+      await timeline;
+      animationCover.style.display = "none";
+      return "i am resolved";
+    }
+
+
+    async function startAnimation() {
+      animationCover.style.display = "flex";
+      animationCover.style.backgroundColor = "rgba(251, 224, 46, 0.9)";
+      animationIcon.src = "./start.png";
+      animationText.innerText = "Задание начато!";
+
+      const timeline = gsap.timeline();
+
+      // 1. Пульсация фона
+      timeline.to(animationCover, {
+        opacity: 1,
+        scale: 1.03,
+        duration: 0.4,
+        repeat: 1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      // 2. Прыжок иконки
+      timeline.fromTo(
+        animationIcon,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: -10, duration: 0.5, ease: "back.out(1.7)" },
+        "-=0.4"
+      );
+
+      // 3. Появление текста
+      timeline.fromTo(
+        animationText,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        "-=0.3"
+      );
+
+      // 4. Исчезновение
+      timeline.to([animationIcon, animationText], {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+      });
+
+      await timeline;
+      animationCover.style.display = "none";
+      return "i am resolved";
+    }
+
+    // Ивенты для кнопок
+    // Ивенты для кнопок
+    // Ивенты для кнопок
+
+    startButton.addEventListener("click", () => {
+      startAnimation().then(() => {
+        inProcessContainer.appendChild(todo);
+        todo.setAttribute("card-column", "in-process");
+
+        const todosData = loadTodosFromStorage();
+        const todoData = todosData.find(t => t.id === parseInt(todo.dataset.id, 10));
+        if (todoData) {
+          todoData.column = "in-process";
+          saveTodosToStorage(todosData);
+        }
+      });
     });
 
     editButton.addEventListener("click", () => {
@@ -240,25 +419,27 @@ function updateTodoList() {
     });
 
     finishButton.addEventListener("click", () => {
-      todo.remove();
-      todos = document.querySelectorAll(".todo");
-
-      const todosData = loadTodosFromStorage();
-      const updatedTodosData = todosData.filter(t => t.id !== parseInt(todo.dataset.id, 10));
-      saveTodosToStorage(updatedTodosData);
-
-      updateTodoList();
+      successAnimation().then(() => {
+        todo.remove();
+        todos = document.querySelectorAll(".todo");
+        const todosData = loadTodosFromStorage();
+        const updatedTodosData = todosData.filter(t => t.id !== parseInt(todo.dataset.id, 10));
+        saveTodosToStorage(updatedTodosData);
+        updateTodoList();
+      });
     });
 
     failButton.addEventListener("click", () => {
-      todo.remove();
-      todos = document.querySelectorAll(".todo");
+      failAnimation().then(() => {
+        todo.remove();
+        todos = document.querySelectorAll(".todo");
 
-      const todosData = loadTodosFromStorage();
-      const updatedTodosData = todosData.filter(t => t.id !== parseInt(todo.dataset.id, 10));
-      saveTodosToStorage(updatedTodosData);
+        const todosData = loadTodosFromStorage();
+        const updatedTodosData = todosData.filter(t => t.id !== parseInt(todo.dataset.id, 10));
+        saveTodosToStorage(updatedTodosData);
 
-      updateTodoList();
+        updateTodoList();
+      });
     });
 
     saveButton.addEventListener("click", () => {
@@ -278,13 +459,32 @@ function updateTodoList() {
         saveTodosToStorage(todosData);
       }
     });
+
+    backButton.addEventListener("click", () => {
+      newTodosContainer.appendChild(todo);
+      todo.setAttribute("card-column", "new-todos");
+
+      const todosData = loadTodosFromStorage();
+      const todoData = todosData.find(t => t.id === parseInt(todo.dataset.id, 10));
+      if (todoData) {
+        todoData.column = "new-todos";
+        saveTodosToStorage(todosData);
+      }
+    });
   });
 }
+
+
 
 const initialTodoHtml = (data = {}) => {
   const { name = "Название", description = "Описание", due = "2025-10-10", priority = "5", column = "new-todos" } = data;
   return `
+    <div class="animation-cover">
+      <img src="./success.png" alt="" class="animation-icon">
+      <p class="animation-text"></p>
+    </div>
     <div class="front-side">
+      <img src="./back.png" alt="" class="back-button">
       <div class="todo-name">
         <h2>${name}</h2>
       </div>
@@ -292,10 +492,10 @@ const initialTodoHtml = (data = {}) => {
         <p>${description}</p>
       </div>
       <div class="front-buttons">
-        <button class="fail"><img src="/close.png" alt=""></button>
-        <button class="edit"><img src="/edit.png" alt=""></button>
-        <button class="finish"><img src="/success.png" alt=""></button>
-        <button class="start"><img src="/start.png" alt=""></button>
+        <button class="fail"><img src="./close.png" alt=""></button>
+        <button class="edit"><img src="./edit.png" alt=""></button>
+        <button class="finish"><img src="./success.png" alt=""></button>
+        <button class="start"><img src="./start.png" alt=""></button>
       </div>
       <div class="date-priority">
         <div class="due">
@@ -327,13 +527,17 @@ const initialTodoHtml = (data = {}) => {
         <input type="text" name="due" class="edit-due">
       </div>
       <div class="edit-buttons">
-        <button class="delete"><img src="/bin.png" alt=""></button>
-        <button class="save"><img src="/check-mark.png" alt=""></button>
-        <button class="cancel"><img src="/close.png" alt=""></button>
+        <button class="delete"><img src="./bin.png" alt=""></button>
+        <button class="save"><img src="./check-mark.png" alt=""></button>
+        <button class="cancel"><img src="./close.png" alt=""></button>
       </div>
     </div>
   `;
 };
+
+// Добавление новых тудушек
+// Добавление новых тудушек
+// Добавление новых тудушек
 
 const addButton = document.querySelector(".add-todo");
 
