@@ -5,25 +5,26 @@
     <link rel="icon" type="image/svg+xml" href="/animetedTodolist/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
-    <script type="module" crossorigin src="/animetedTodolist/assets/index-CGinzUhP.js"></script>
-    <link rel="stylesheet" crossorigin href="/animetedTodolist/assets/index-Cez1SH47.css">
+    <script type="module" crossorigin src="/animetedTodolist/assets/index-DY-gPDob.js"></script>
+    <link rel="stylesheet" crossorigin href="/animetedTodolist/assets/index-BfnUgBaF.css">
   </head>
   <body>
+    <canvas class="particles"></canvas>
     <header>
       <div class="color-setup">
         <div class="particle-changer">
           <input type="color" name="" value="#ffffff" id="particle-color">
-          <label for="particle-color">Particle Color</label>
+          <label for="particle-color">Частицы</label>
         </div>
         <div class="bg-changer">
           <input type="color" name="" value="#6a9df5" id="bg-color">
-          <label for="bg-color">Background Color</label>
+          <label for="bg-color">Задний фон</label>
         </div>
-        <button class="apply">Apply</button>
+        <button class="apply">Применить</button>
       </div>
       <h1 class="Name">animatedTodos</h1>
       <div class="presets-area">
-        <button class="view">View presets</button>
+        <button class="view">Пресеты</button>
         <div class="presets">
           <div class="preset" id="preset1">
             <div class="inner-color"></div>
@@ -47,7 +48,19 @@
       </div>
       
     </header>
-    <div id="app"></div>
-    <canvas class="particles"></canvas>
+    <div class="todo-list">
+      <div class="todo-col new-todos">
+        <button class="add-todo"><img src="/animetedTodolist/add.png" alt=""></button>
+        <div class="todo-container">
+          
+        </div>
+      </div>
+      <div class="todo-col in-process">
+        <div class="todo-container">
+
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>
